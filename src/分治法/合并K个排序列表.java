@@ -1,0 +1,54 @@
+package 分治法;
+
+public class 合并K个排序列表 {
+
+	public static void main(String[] args) {
+		ListNode l1=new ListNode(1);
+		ListNode l2=new ListNode(3);
+		l1.next=new ListNode(4);
+		l2.next=new ListNode(6);
+		l1.next.next=new ListNode(5);
+		ListNode l3=mergeTowLists(l1, l2);
+		while(l3!=null){
+			System.out.println(l3.val);
+			l3=l3.next;
+		}
+	}
+	public ListNode mergeKLists(ListNode[] lists){
+        if(lists.length==0) return null;
+        if(lists.length==1) return lists[0];
+        if(lists.length==2) return mergeTowLists(lists[0], lists[1]);
+        int mid=lists.length/2;
+        ListNode[] l1=new ListNode[mid];
+        ListNode[] l2=new ListNode[lists.length-mid];
+        for(int i=0;i<mid;i++){
+        	l1[i]=lists[i];
+        }
+        for(int i=mid,j=0;i<lists.length;i++,j++){
+        	l2[j]=lists[i];
+        }
+        return mergeTowLists(mergeKLists(l1), mergeKLists(l2));
+    }
+	public static ListNode mergeTowLists(ListNode l1,ListNode l2){
+		if(l1==null) return l2;
+		if(l2==null) return l1;
+		ListNode head;
+		if(l1.val<=l2.val){
+			head=l1;
+			head.next=mergeTowLists(l1.next, l2);
+		}else{
+			head=l2;
+			head.next=mergeTowLists(l1, l2.next);
+		}
+		return head;
+	}
+}
+
+class ListNode {
+	int val;
+	ListNode next;
+
+	ListNode(int x) {
+		val = x;
+	}
+}
